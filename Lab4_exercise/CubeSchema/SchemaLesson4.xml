@@ -1,0 +1,33 @@
+<Schema name="Northwind Cube" description="Cubo criado para atividade do laborat&#243;rio 4">
+  <Cube name="Cube Northwind" visible="true" cache="true" enabled="true">
+    <Table name="F_SALES" schema="public">
+    </Table>
+    <Dimension type="TimeDimension" visible="true" foreignKey="ID_DATE_ORDER_DATE" highCardinality="false" name="D_DateTime" description="Data e hora">
+      <Hierarchy name="DateTimeDimension" visible="true" hasAll="true" allMemberName="DateTime" primaryKey="ID_DATE">
+        <Table name="D_DATE" schema="public" alias="Dim_Date">
+        </Table>
+        <Level name="Year" visible="true" column="YEAR" type="Numeric" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never">
+        </Level>
+        <Level name="Quarter" visible="true" column="QUARTER" type="String" uniqueMembers="false" levelType="TimeQuarters" hideMemberIf="Never">
+        </Level>
+        <Level name="Month" visible="true" column="MONTH_NAME" type="String" uniqueMembers="false" levelType="TimeMonths" hideMemberIf="Never">
+        </Level>
+        <Level name="WeekDayNumber" visible="true" column="WEEK_DAY_NUMBER" type="Numeric" uniqueMembers="false" levelType="TimeWeeks" hideMemberIf="Never">
+        </Level>
+        <Level name="WeekDayName" visible="true" column="WEEK_DAY_NAME" type="String" uniqueMembers="false" levelType="TimeWeeks" hideMemberIf="Never">
+        </Level>
+        <Level name="Day" visible="true" column="MONTH_DAY_NUMBER" type="String" uniqueMembers="false" levelType="TimeDays" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Quantity" column="QUANTITY" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Discount" column="DISCOUNT" aggregator="distinct-count" visible="true">
+      <MeasureExpression>
+        <SQL dialect="generic">
+          <![CDATA[select (PRODUCT_UNIT_PRICE * 0,15) from D_PRODUCT]]>
+        </SQL>
+      </MeasureExpression>
+    </Measure>
+  </Cube>
+</Schema>
