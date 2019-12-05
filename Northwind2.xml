@@ -1,0 +1,42 @@
+<Schema name="Northwind Cube" description="Cubo criado para atividade do laborat&#243;rio 4">
+  <Cube name="Sales" visible="true" cache="true" enabled="true">
+    <Table name="F_SALES" schema="public">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="ID_EMPLOYEE" highCardinality="false" name="Employee">
+      <Hierarchy name="Employee Hierarchy" visible="true" hasAll="true" allMemberName="All employees" primaryKey="ID_EMPLOYEE">
+        <Table name="D_EMPLOYEE" schema="public">
+        </Table>
+        <Level name="Employees" visible="true" column="EMPLOYEE_NAME" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="TimeDimension" visible="true" foreignKey="ID_DATE_ORDERDATE" highCardinality="false" name="Order date">
+      <Hierarchy name="Order Date Hierarchy" visible="true" hasAll="true" allMemberName="All Orders Date" primaryKey="ID_DATE">
+        <Table name="D_DATE" schema="public">
+        </Table>
+        <Level name="Year" visible="true" column="YEAR" type="String" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never">
+        </Level>
+        <Level name="Quarter" visible="true" column="QUARTER" type="String" uniqueMembers="true" levelType="TimeQuarters" hideMemberIf="Never">
+        </Level>
+        <Level name="Month" visible="true" column="MONTH_NUMBER" type="String" uniqueMembers="true" levelType="TimeMonths" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="ID_PRODUCT" highCardinality="false" name="Product">
+      <Hierarchy name="Product Hierarchy" visible="true" hasAll="true" primaryKey="ID_PRODUCT" primaryKeyTable="D_PRODUCT">
+        <Join leftKey="ID_CATEGORY" rightKey="ID_CATEGORY">
+          <Table name="D_PRODUCT" schema="public">
+          </Table>
+          <Table name="D_CATEGORY" schema="public">
+          </Table>
+        </Join>
+        <Level name="Categories" visible="true" table="D_CATEGORY" column="CATEGORY_NAME" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Products" visible="true" table="D_PRODUCT" column="PRODUCT_NAME" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Quantity" column="QUANTITY" datatype="Numeric" formatString="#.##0." aggregator="sum" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
